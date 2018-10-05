@@ -1,3 +1,4 @@
+// https://github.com/eirikbakke/InvalidImageVariantBugExhibit
 package invalidimagevariant;
 
 import java.awt.Canvas;
@@ -18,20 +19,21 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 /*
-    Demonstration of "Invalid Image variant" exception when attempting to use a MultiResolutionImage
-    on Windows 10 on Java 10.0.2.
+    Demonstration of an "Invalid Image variant" exception when attempting to use a
+    MultiResolutionImage on Windows 10 on Java 10.0.2, 11-ea, or 12-ea.
 
       Setup:
       * Windows 10
       * OpenJDK 10.0.2.
-      * A HiDPI laptop screen set at scaling "200%" in the Windows "Display" settings app, with a
-        regular non-HiDPI external monitor as the main display.
+      * One HiDPI laptop screen set at scaling "200%" in the Windows "Display" settings app,
+        combined with a regular non-HiDPI external monitor as the main display.
         (Tested on a Lenovo X1 Carbon 6th gen laptop.)
 
       The situation in which the bug was consistently encountered was as follows:
       1) Start this application. The JFrame will appear on the primary monitor. The icon in the
          button says "ICON 1x".
-      2) Now drag the Window over to the HiDPI screen. The exception below occurs:
+      2) Now drag the Window over to the HiDPI screen. The exception below occurs (for Java 10.0.2,
+         but nearly identical for 12-ea, except for source code line numbers):
 
     Exception in thread "AWT-EventQueue-0" java.lang.IllegalArgumentException: Invalid Image variant
       at java.desktop/sun.awt.image.SurfaceManager.getManager(SurfaceManager.java:82)
@@ -95,6 +97,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 */
 public class InvalidImageVariantBugExhibit {
   public static void main(String[] args) {
+    System.out.println("Java Version: " + System.getProperty("java.version"));
     SwingUtilities.invokeLater(InvalidImageVariantBugExhibit::onEDT);
   }
 
